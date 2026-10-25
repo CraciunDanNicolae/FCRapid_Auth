@@ -1,4 +1,5 @@
 package com.fcrapid.auth.service;
+import com.fcrapid.auth.dto.AuthResponse;
 import com.fcrapid.auth.model.User;
 import com.fcrapid.auth.repository.AuthRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,5 +35,13 @@ public class AuthService {
     }
     public void deleteUser(String email){
         repository.deleteByEmail(email);
+    }
+
+    public User updateUser(String currentEmail, String newUsername, String newEmail){
+        User user = repository.findByEmail(currentEmail);
+        user.setEmail(newEmail);
+        user.setUsername(newUsername);
+        repository.save(user);
+        return user;
     }
 }
