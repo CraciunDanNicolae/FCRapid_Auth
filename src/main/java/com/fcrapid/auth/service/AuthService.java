@@ -5,6 +5,8 @@ import com.fcrapid.auth.repository.AuthRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class AuthService {
@@ -14,12 +16,12 @@ public class AuthService {
         this.repository = repository;
         this.encoder = encoder;
     }
-    public User registerUser(String email, String passsword, String username){
+    public User registerUser(String email, String passsword, String username, String imageURL){
         if(repository.findByEmail(email) != null){
             return null;
         }
         String hiddenPassword = encoder.encode(passsword);
-        User user = new User(email, username, hiddenPassword);
+        User user = new User(email, username, hiddenPassword, imageURL);
         repository.save(user);
         return user;
     }

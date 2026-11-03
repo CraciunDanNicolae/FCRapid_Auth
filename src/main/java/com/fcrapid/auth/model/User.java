@@ -28,19 +28,24 @@ public class User {
     private String password;
     @Getter
     private LocalDateTime creationDate;
+    @Getter
+    @Setter
+    private String imageURL;
 
     public User(){
         email = "";
         username = "";
         password = "";
         creationDate = LocalDateTime.now();
+        imageURL = "";
     }
 
-    public User(String email, String username, String password){
+    public User(String email, String username, String password, String imageURL){
         this.email = email;
         this.username = username;
         this.password = password;
         creationDate = LocalDateTime.now();
+        this.imageURL = imageURL;
     }
 
     @Override
