@@ -29,7 +29,7 @@ public class AuthController {
         if(user == null){
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(user.getEmail()), user.getEmail(), user.getUsername(), user.getImageURL()));
+        return ResponseEntity.ok(new AuthResponse(user.getId(), jwtUtil.generateToken(user.getEmail()), user.getEmail(), user.getUsername(), user.getImageURL()));
     }
 
     @PostMapping("/login")
@@ -38,7 +38,7 @@ public class AuthController {
         if(user == null){
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(user.getEmail()), user.getEmail(), user.getUsername(), user.getImageURL()));
+        return ResponseEntity.ok(new AuthResponse(user.getId(), jwtUtil.generateToken(user.getEmail()), user.getEmail(), user.getUsername(), user.getImageURL()));
     }
 
     @PostMapping("/deleteUser")
@@ -56,11 +56,11 @@ public class AuthController {
         }
         String currentEmail = jwtUtil.extractEmail(token);
         User user = authService.updateUser(currentEmail, request.getUsername(), request.getEmail());
-        return ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(user.getEmail()), user.getEmail(), user.getUsername(), user.getImageURL()));
+        return ResponseEntity.ok(new AuthResponse(user.getId(), jwtUtil.generateToken(user.getEmail()), user.getEmail(), user.getUsername(), user.getImageURL()));
     }
 
     @PostMapping("/uploadPicture")
-    public ResponseEntity<AuthResponse> uploadPicture(
+    public ResponseEntity<String> uploadPicture(
             @RequestHeader("Authorization") String authHeader,
             @RequestParam("image") MultipartFile image) throws Exception {
         String token = authHeader.substring(7);
@@ -69,8 +69,8 @@ public class AuthController {
         }
         String email = jwtUtil.extractEmail(token);
         String imageURL = imageService.uploadImage(image);
-        User user = imageService.changeImage(email, imageURL);
-        return ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(user.getEmail()), user.getEmail(), user.getUsername(), user.getImageURL()));
+
+        return ResponseEntity.ok(imageURL);
     }
 
 }

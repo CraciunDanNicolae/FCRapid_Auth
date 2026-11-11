@@ -1,6 +1,5 @@
 package com.fcrapid.auth.service;
 
-import com.fcrapid.auth.model.User;
 import com.fcrapid.auth.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -42,11 +41,5 @@ public class ImageService {
         return uploadUrl;
     }
 
-    public User changeImage(String email,String url){
-        User user = repository.findByEmail(email);
-        user.setImageURL(url);
-        repository.save(user);
-        return user;
-    }
 
 }
